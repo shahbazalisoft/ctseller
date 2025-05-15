@@ -41,14 +41,14 @@
                                 <div class="cmn--media right-dropdown-icon d-flex align-items-center">
                                     <div class="media-body pl-0 pr-2">
                                         <span class="card-title h5 text-right">
-                                            Admin
+                                            {{auth('admin')->user()->f_name}}
                                         </span>
-                                        <span class="card-text">shahbazalisoft15@gmail.com</span>
+                                        <span class="card-text">{{auth('admin')->user()->email}}</span>
                                     </div>
                                     <div class="avatar avatar-sm avatar-circle">
                                         <img class="avatar-img"
                                             onerror="this.src='{{asset('public/assets/admin/img/160x160/img1.jpg')}}'"
-                                            src="http://localhost/sloop_app/sloop/public/assets/admin/img/160x160/img1.jpg"
+                                            src="{{asset('storage/app/public/admin')}}/{{auth('admin')->user()->image}}"
                                             alt="Image Description">
                                         <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                                     </div>
@@ -61,13 +61,13 @@
                                     <div class="media align-items-center">
                                         <div class="avatar avatar-sm avatar-circle mr-2">
                                             <img class="avatar-img"
-                                                 onerror="this.src='{{asset('public/assets/admin/img/160x160/img1.jpg')}}'"
-                                                 src="http://localhost/sloop_app/sloop/public/assets/admin/img/160x160/img1.jpg"
-                                                 alt="Owner image">
+                                                onerror="this.src='{{asset('public/assets/admin/img/160x160/img1.jpg')}}'"
+                                                src="{{asset('storage/app/public/admin')}}/{{auth('admin')->user()->image}}"
+                                                alt="Image Description">
                                         </div>
                                         <div class="media-body">
-                                            <span class="card-title h5">Admin</span>
-                                            <span class="card-text">shahbazalisoft15@gmail.com</span>
+                                            <span class="card-title h5">{{auth('admin')->user()->f_name}}</span>
+                                            <span class="card-text">{{auth('admin')->user()->email}}</span>
                                         </div>
                                     </div>
                                 </div>

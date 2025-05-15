@@ -47,7 +47,7 @@ $log_email_succ = session()->get('log_email_succ');
                     <!-- Form -->
                     <form class="" action="{{route('login_post')}}" method="post" id="form-id">
                         @csrf
-                        <input type="hidden" name="role" value="1">
+                        <input type="hidden" name="role" value="{{  $role ?? null }}">
                         <div class="auth-header">
                             <div class="mb-5">
                                 <h2 class="title">CTSeller Login</h2>

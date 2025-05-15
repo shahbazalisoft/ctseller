@@ -5,6 +5,7 @@ namespace App\CentralLogics;
 use App\Models\BusinessSetting;
 use App\Models\Currency;
 use Illuminate\Support\Facades\Storage;
+use App\Models\DataSetting;
 
 class Helpers
 {
@@ -110,6 +111,77 @@ class Helpers
             $price_discount = $product['discount'];
         }
         return $price_discount;
+    }
+
+    public static function get_business_settings($name)
+    {
+        $config = null;
+
+        $paymentmethod = BusinessSetting::where('key', $name)->first();
+
+        if ($paymentmethod) {
+            $config = json_decode($paymentmethod->value, true);
+        }
+
+        return $config;
+    }
+
+    public static function get_login_url($type){
+        $data=DataSetting::whereIn('key',['store_employee_login_url','store_login_url','admin_employee_login_url','admin_login_url'
+        ])->pluck('key','value')->toArray();
+
+        return array_search($type,$data);
+    }
+    public static function module_permission_check($mod_name)
+    {
+        if (!auth('admin')->user()->role) {
+            return false;
+        }
+        if ($mod_name == 'zone' && auth('admin')->user()->zone_id) {
+            return false;
+        }
+
+        $permission = auth('admin')->user()->role->modules;
+        if (isset($permission) && in_array($mod_name, (array)json_decode($permission)) == true) {
+            return true;
+        }
+
+        if (auth('admin')->user()->role_id == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public static function employee_module_permission_check($mod_name)
+    {
+        if (auth('vendor')->check()) {
+            if ($mod_name == 'reviews') {
+                return auth('vendor')->user()->stores[0]->reviews_section;
+            } else if ($mod_name == 'deliveryman') {
+                return auth('vendor')->user()->stores[0]->self_delivery_system;
+            } else if ($mod_name == 'pos') {
+                return auth('vendor')->user()->stores[0]->pos_system;
+            } else if ($mod_name == 'addon') {
+                return config('module.' . auth('vendor')->user()->stores[0]->module->module_type)['add_on'];
+            }
+            return true;
+        } else if (auth('vendor_employee')->check()) {
+            $permission = auth('vendor_employee')->user()->role->modules;
+            if (isset($permission) && in_array($mod_name, (array)json_decode($permission)) == true) {
+                if ($mod_name == 'reviews') {
+                    return auth('vendor_employee')->user()->store->reviews_section;
+                } else if ($mod_name == 'deliveryman') {
+                    return auth('vendor_employee')->user()->store->self_delivery_system;
+                } else if ($mod_name == 'pos') {
+                    return auth('vendor_employee')->user()->store->pos_system;
+                } else if ($mod_name == 'addon') {
+                    return config('module.' . auth('vendor_employee')->user()->store->module->module_type)['add_on'];
+                }
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

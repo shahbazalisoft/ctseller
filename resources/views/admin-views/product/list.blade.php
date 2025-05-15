@@ -101,11 +101,11 @@
                         <!-- End Search -->
                     </form>
                     <div>
-                        <a href="" class="btn btn--primary font-regular">Limited Stock</a>
+                        <a href="{{ route('admin.item.add-new') }}" class="btn btn--primary font-regular"><i class="tio-add-circle"></i> New Product</a>
                     </div>
                     
                     <div>
-                        <a href="{{ route('admin.item.add-new') }}" class="btn btn--primary font-regular">New Product</a>
+                        <a href="" class="btn btn--primary font-regular">Limited Stock</a>
                     </div>
                 </div>
                 <!-- End Row -->

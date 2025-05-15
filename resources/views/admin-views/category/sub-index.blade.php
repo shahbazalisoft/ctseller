@@ -36,7 +36,7 @@
                     </form>
                     <!-- Unfold -->
                     <div>
-                        <a href="{{ route('admin.category.add-sub-category') }}" class="btn btn--primary font-regular">Add New</a>
+                        <a href="{{ route('admin.category.add-sub-category') }}" class="btn btn--primary font-regular"><i class="tio-add-circle"></i> Add New</a>
                     </div>
                     <!-- End Unfold -->
                 </div>

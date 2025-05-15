@@ -29,23 +29,6 @@ class Zone extends Model
         'coordinates' => Polygon::class,
     ];
 
-    public function translations()
-    {
-        return $this->morphMany(Translation::class, 'translationable');
-    }
-
-    public function getNameAttribute($value){
-        if (count($this->translations) > 0) {
-            foreach ($this->translations as $translation) {
-                if ($translation['key'] == 'name') {
-                    return $translation['value'];
-                }
-            }
-        }
-
-        return $value;
-    }
-
     public function stores()
     {
         return $this->hasMany(Store::class);
@@ -76,16 +59,16 @@ class Zone extends Model
         return $query->whereRaw("ST_Distance_Sphere(coordinates, POINT({$abc}))");
     }
 
-    protected static function booted()
-    {
-        static::addGlobalScope(new ZoneScope);
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new ZoneScope);
 
-        static::addGlobalScope('translate', function (Builder $builder) {
-            $builder->with(['translations' => function($query){
-                return $query->where('locale', app()->getLocale());
-            }]);
-        });
-    }
+    //     static::addGlobalScope('translate', function (Builder $builder) {
+    //         $builder->with(['translations' => function($query){
+    //             return $query->where('locale', app()->getLocale());
+    //         }]);
+    //     });
+    // }
 
     public function modules()
     {
