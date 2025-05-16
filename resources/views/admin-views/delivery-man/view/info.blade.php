@@ -1,6 +1,6 @@
 @extends('layouts.admin.app')
 
-@section('title',translate('Delivery Man Preview'))
+@section('title','Delivery Man Preview')
 
 @push('css_or_js')
 
@@ -14,7 +14,7 @@
                 <span class="page-header-icon">
                     <img src="{{asset('public/assets/admin/img/delivery-man.png')}}" class="w--26" alt="">
                 </span>
-                <span>{{translate('messages.deliveryman_preview')}}<span class="badge badge-soft-dark ml-2" id="itemCount">{{$reviews->total()}}</span></span>
+                <span>Delivery Man Preview<span class="badge badge-soft-dark ml-2" id="itemCount">{{$reviews->total()}}</span></span>
             </h1>
             <div class="row">
                 @if($dm->application_status == 'approved')
@@ -23,13 +23,13 @@
                         <!-- Nav -->
                         <ul class="nav nav-tabs mb-3 border-0 nav--tabs">
                             <li class="nav-item">
-                                <a class="nav-link active" href="{{route('admin.users.delivery-man.preview', ['id'=>$dm->id, 'tab'=> 'info'])}}"  aria-disabled="true">{{translate('messages.info')}}</a>
+                                <a class="nav-link active" href="{{route('admin.delivery-man.preview', ['id'=>$dm->id, 'tab'=> 'info'])}}"  aria-disabled="true">Info</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{route('admin.users.delivery-man.preview', ['id'=>$dm->id, 'tab'=> 'transaction'])}}"  aria-disabled="true">{{translate('messages.transaction')}}</a>
+                                <a class="nav-link" href="{{route('admin.delivery-man.preview', ['id'=>$dm->id, 'tab'=> 'transaction'])}}"  aria-disabled="true">Transaction</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{route('admin.users.delivery-man.preview', ['id'=>$dm->id, 'tab'=> 'conversation'])}}"  aria-disabled="true">{{translate('messages.conversations')}}</a>
+                                <a class="nav-link" href="{{route('admin.delivery-man.preview', ['id'=>$dm->id, 'tab'=> 'conversation'])}}"  aria-disabled="true">Conversations</a>
                             </li>
                         </ul>
                         <!-- End Nav -->
@@ -39,12 +39,12 @@
                 <div class="col-md-12">
                     <div class="btn--container justify-content-end">
                         <a class="btn btn--primary text-capitalize font-weight-bold"
-                        onclick="request_alert('{{route('admin.users.delivery-man.application',[$dm['id'],'approved'])}}','{{translate('messages.you_want_to_approve_this_application')}}')"
-                            href="javascript:"><i class="tio-checkmark-circle-outlined font-weight-bold pr-1"></i> {{translate('messages.approve')}}</a>
+                        onclick="request_alert('{{route('admin.delivery-man.application',[$dm['id'],'approved'])}}','You want to approve this application')"
+                            href="javascript:"><i class="tio-checkmark-circle-outlined font-weight-bold pr-1"></i> Approve</a>
                         @if($dm->application_status !='denied')
                         <a class="btn btn--danger text-capitalize font-weight-bold"
-                        onclick="request_alert('{{route('admin.users.delivery-man.application',[$dm['id'],'denied'])}}','{{translate('messages.you_want_to_deny_this_application')}}')"
-                            href="javascript:"><i class="tio-clear-circle-outlined font-weight-bold pr-1"></i> {{translate('messages.deny')}}</a>
+                        onclick="request_alert('{{route('admin.delivery-man.application',[$dm['id'],'denied'])}}','You want to deny this application')"
+                            href="javascript:"><i class="tio-clear-circle-outlined font-weight-bold pr-1"></i> Deny</a>
                         @endif
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                         {{$dm->total_delivered_orders()->count()}}
                     </h2>
                     <h5 class="subtitle">
-                        {{translate('messages.total_delivered_orders')}}
+                        Total delivered orders
                     </h5>
                     <img class="resturant-icon w--30" src="{{asset('public/assets/admin/img/tick.png')}}" alt="img">
                 </div>
@@ -75,7 +75,7 @@
                         {{\App\CentralLogics\Helpers::format_currency($dm->wallet?$dm->wallet->collected_cash:0.0)}}
                     </h2>
                     <h5 class="subtitle">
-                        {{translate('messages.cash_in_hand')}}
+                        Cash in hand
                     </h5>
                     <img class="resturant-icon w--30" src="{{asset('public/assets/admin/img/withdraw-amount.png')}}" alt="img">
                 </div>
@@ -88,7 +88,7 @@
                         {{\App\CentralLogics\Helpers::format_currency($dm->wallet?$dm->wallet->total_earning:0.00)}}
                     </h2>
                     <h5 class="subtitle">
-                        {{translate('messages.total_earning')}}
+                        Total earning
                     </h5>
                     <img class="resturant-icon w--30" src="{{asset('public/assets/admin/img/pending.png')}}" alt="img">
                 </div>
@@ -106,26 +106,26 @@
 
                         (@if($dm->zone)
                             {{$dm->zone->name}}
-                        @else {{translate('messages.zone_deleted')}}
+                        @else Zone deleted
                         @endif )
                         @if($dm->application_status=='approved')
                             @if($dm['status'])
                                 @if($dm['active'])
-                                    <label class="badge badge-soft-primary">{{translate('messages.online')}}</label>
+                                    <label class="badge badge-soft-primary">Online</label>
                                 @else
-                                    <label class="badge badge-soft-danger">{{translate('messages.offline')}}</label>
+                                    <label class="badge badge-soft-danger">Offline</label>
                                 @endif
                             @else
-                            <span class="badge badge-danger">{{translate('messages.suspended')}}</span>
+                            <span class="badge badge-danger">Suspended</span>
                             @endif
 
                         @else
-                        <label class="badge badge-soft-{{$dm->application_status=='pending'?'info':'danger'}}">{{translate('messages.'.$dm->application_status)}}</label>
+                        <label class="badge badge-soft-{{$dm->application_status=='pending'?'info':'danger'}}">messages {{$dm->application_status}}</label>
                         @endif
                     </h4>
                     @if($dm->application_status=='approved')
-                    <a  href="javascript:"  onclick="request_alert('{{route('admin.users.delivery-man.status',[$dm['id'],$dm->status?0:1])}}','{{$dm->status?translate('messages.you_want_to_suspend_this_deliveryman'):translate('messages.you_want_to_unsuspend_this_deliveryman')}}')" class="btn font-medium {{$dm->status?'btn--danger':'btn-success'}}">
-                            {{$dm->status?translate('messages.suspend_this_delivery_man'):translate('messages.unsuspend_this_delivery_man')}}
+                    <a  href="javascript:"  onclick="request_alert('{{route('admin.delivery-man.status',[$dm['id'],$dm->status?0:1])}}','{{$dm->status?'You want to suspend this deliveryman':'You want to unsuspend this deliveryman'}}')" class="btn font-medium {{$dm->status?'btn--danger':'btn-success'}}">
+                            {{$dm->status?'Suspend this delivery man':'Unsuspend this deliveryman'}}
                     </a>
                     @endif
                     <div class="hs-unfold">
@@ -133,15 +133,15 @@
                             <button class="btn btn-secondary dropdown-toggle" type="button"
                                     id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
-                                {{translate('messages.type')}} ({{$dm->earning?translate('messages.freelancer'):translate('messages.salary_based')}})
+                                Type ({{$dm->earning?'Freelancer':'Salary based'}})
                             </button>
                             <div class="dropdown-menu text-capitalize" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item {{$dm->earning?'active':''}}"
-                                onclick="request_alert('{{route('admin.users.delivery-man.earning',[$dm['id'],1])}}','{{translate('messages.want_to_enable_earnings')}}')"
-                                    href="javascript:">{{translate('messages.freelancer')}}</a>
+                                onclick="request_alert('{{route('admin.delivery-man.earning',[$dm['id'],1])}}','Want to enable earnings')"
+                                    href="javascript:">Freelancer</a>
                                 <a class="dropdown-item {{$dm->earning?'':'active'}}"
-                                onclick="request_alert('{{route('admin.users.delivery-man.earning',[$dm['id'],0])}}','{{translate('messages.want_to_disable_earnings')}}')"
-                                    href="javascript:">{{translate('messages.salary_based')}}</a>
+                                onclick="request_alert('{{route('admin.delivery-man.earning',[$dm['id'],0])}}','Want to disable earnings')"
+                                    href="javascript:">Salary based</a>
                             </div>
                         </div>
                     </div>
@@ -152,14 +152,14 @@
                 <div class="row gy-3 align-items-center">
                     <div class="col-md-4">
 
-                        <h2 class="title">{{ translate('Vehicle Information') }}</h2>
+                        <h2 class="title">Vehicle Information</h2>
                             @if (isset($dm->vehicle))
-                            <div>{{ translate('Vehicle_Type') }} : {{ $dm->vehicle->type}}</div>
-                            <div>{{ translate('Vehicle_Extra_Charges') }} : {{ $dm->vehicle->extra_charges}}</div>
-                            <div>{{ translate('Vehicle_minimum_coverage_area') }} : {{ $dm->vehicle->starting_coverage_area}}</div>
-                            <div>{{ translate('Vehicle_maximum_coverage_area') }} : {{ $dm->vehicle->maximum_coverage_area}}</div>
+                            <div>Vehicle Type : {{ $dm->vehicle->type}}</div>
+                            <div>Vehicle Extra Charges : {{ $dm->vehicle->extra_charges}}</div>
+                            <div>Vehicle minimum coverage area : {{ $dm->vehicle->starting_coverage_area}}</div>
+                            <div>Vehicle maximum coverage area : {{ $dm->vehicle->maximum_coverage_area}}</div>
                             @else
-                            <div>{{ translate('No_vehicle_data_found') }}</div>
+                            <div>No vehicle data found</div>
                             @endif
 
                     </div>
@@ -249,7 +249,7 @@
                                     @endif
                                     <div class="info">
                                         {{-- <span class="mr-3">{{$dm->rating->count()}} {{translate('messages.rating')}}</span> --}}
-                                        <span>{{$dm->reviews->count()}} {{translate('messages.reviews')}}</span>
+                                        <span>{{$dm->reviews->count()}} Reviews</span>
                                     </div>
                                 </div>
 
@@ -265,7 +265,7 @@
                             <li class="d-flex align-items-center font-size-sm">
                                 @php($five=\App\CentralLogics\Helpers::dm_rating_count($dm['id'],5))
                                 <span
-                                    class="progress-name mr-3">{{translate('excellent')}}</span>
+                                    class="progress-name mr-3">Excellent</span>
                                 <div class="progress flex-grow-1">
                                     <div class="progress-bar" role="progressbar"
                                          style="width: {{$total==0?0:($five/$total)*100}}%;"
@@ -279,7 +279,7 @@
                             <!-- Review Ratings -->
                             <li class="d-flex align-items-center font-size-sm">
                                 @php($four=\App\CentralLogics\Helpers::dm_rating_count($dm['id'],4))
-                                <span class="progress-name mr-3">{{translate('good')}}</span>
+                                <span class="progress-name mr-3">Good</span>
                                 <div class="progress flex-grow-1">
                                     <div class="progress-bar" role="progressbar"
                                          style="width: {{$total==0?0:($four/$total)*100}}%;"
@@ -293,7 +293,7 @@
                             <!-- Review Ratings -->
                             <li class="d-flex align-items-center font-size-sm">
                                 @php($three=\App\CentralLogics\Helpers::dm_rating_count($dm['id'],3))
-                                <span class="progress-name mr-3">{{translate('average')}}</span>
+                                <span class="progress-name mr-3">Average</span>
                                 <div class="progress flex-grow-1">
                                     <div class="progress-bar" role="progressbar"
                                          style="width: {{$total==0?0:($three/$total)*100}}%;"
@@ -307,7 +307,7 @@
                             <!-- Review Ratings -->
                             <li class="d-flex align-items-center font-size-sm">
                                 @php($two=\App\CentralLogics\Helpers::dm_rating_count($dm['id'],2))
-                                <span class="progress-name mr-3">{{translate('below_average')}}</span>
+                                <span class="progress-name mr-3">Below Average</span>
                                 <div class="progress flex-grow-1">
                                     <div class="progress-bar" role="progressbar"
                                          style="width: {{$total==0?0:($two/$total)*100}}%;"
@@ -321,7 +321,7 @@
                             <!-- Review Ratings -->
                             <li class="d-flex align-items-center font-size-sm">
                                 @php($one=\App\CentralLogics\Helpers::dm_rating_count($dm['id'],1))
-                                <span class="progress-name mr-3">{{translate('poor')}}</span>
+                                <span class="progress-name mr-3">Poor</span>
                                 <div class="progress flex-grow-1">
                                     <div class="progress-bar" role="progressbar"
                                          style="width: {{$total==0?0:($one/$total)*100}}%;"
@@ -342,12 +342,12 @@
             <div class="card-header">
                 <h5 class="card-title">
                     <i class="tio-user"></i>
-                    <span>{{ translate('Identity Documents') }}</span>
+                    <span>Identity Documents</span>
                 </h5>
             </div>
             <div class="card-body">
-                <div class="pl-3"><span class="te">{{ translate('Identity_Type') }}</span> : {{ translate($dm->identity_type)}}</div>
-                <div class="pl-3"><span class="te">{{ translate('messages.identification_number') }}</span> : {{ $dm->identity_number}}</div>
+                <div class="pl-3"><span class="te">Identity Type</span> : {{ $dm->identity_type}}</div>
+                <div class="pl-3"><span class="te">Identification Number</span> : {{ $dm->identity_number}}</div>
                 <div class="row g-3">
                     @foreach (json_decode($dm->identity_image) as $key => $img)
                         <div class="col-auto">
@@ -364,10 +364,10 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h4 class="modal-title" id="myModlabel">
-                                                {{ translate('messages.Identity_Image') }}</h4>
+                                                Identity Image</h4>
                                             <button type="button" class="close" data-dismiss="modal"><span
                                                     aria-hidden="true">&times;</span><span
-                                                    class="sr-only">{{ translate('messages.Close') }}</span></button>
+                                                    class="sr-only">Close</span></button>
                                         </div>
                                         <div class="modal-body">
                                             <img onerror="this.src='{{ asset('/public/assets/admin/img/900x400/img1.jpg') }}'"
@@ -390,7 +390,7 @@
             <!-- Header -->
             <div class="card-header py-2 border-0">
                 <h5 class="card-header-title">
-                        {{translate('messages.review_list')}}
+                        Review List
                 </h5>
                 <div class="search--button-wrapper justify-content-end">
                     <!-- Unfold -->
@@ -400,30 +400,24 @@
                                     "target": "#usersExportDropdown",
                                     "type": "css-animation"
                                 }'>
-                            <i class="tio-download-to mr-1"></i> {{ translate('messages.export') }}
+                            <i class="tio-download-to mr-1"></i> Export
                         </a>
 
                         <div id="usersExportDropdown"
                             class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-sm-right">
-                            <span class="dropdown-header">{{ translate('messages.download_options') }}</span>
-                            <a id="export-excel" class="dropdown-item" href="{{route('admin.delivery-man.review-export', ['type'=>'excel','id'=>$dm->id,request()->getQueryString()])}}">
+                            <span class="dropdown-header">Download Options</span>
+                            <a id="export-excel" class="dropdown-item" href="">
                                 <img class="avatar avatar-xss avatar-4by3 mr-2"
                                     src="{{ asset('public/assets/admin') }}/svg/components/excel.svg"
                                     alt="Image Description">
-                                {{ translate('messages.excel') }}
+                                excel
                             </a>
-                            <a id="export-csv" class="dropdown-item" href="{{route('admin.delivery-man.review-export', ['type'=>'csv','id'=>$dm->id,request()->getQueryString()])}}">
+                            <a id="export-csv" class="dropdown-item" href="">
                                 <img class="avatar avatar-xss avatar-4by3 mr-2"
                                     src="{{ asset('public/assets/admin') }}/svg/components/placeholder-csv-format.svg"
                                     alt="Image Description">
-                                .{{ translate('messages.csv') }}
+                                .csv
                             </a>
-                            {{-- <a id="export-pdf" class="dropdown-item" href="javascript:;">
-                                <img class="avatar avatar-xss avatar-4by3 mr-2"
-                                    src="{{ asset('public/assets/admin') }}/svg/components/pdf.svg"
-                                    alt="Image Description">
-                                {{ translate('messages.pdf') }}
-                            </a> --}}
                         </div>
                     </div>
                     <!-- End Unfold -->
@@ -452,10 +446,10 @@
                     }'>
                         <thead class="thead-light">
                         <tr>
-                            <th class="border-0">{{translate('messages.reviewer')}}</th>
-                            <th class="border-0">{{translate('messages.order_id')}}</th>
-                            <th class="border-0">{{translate('messages.reviews')}}</th>
-                            <th class="border-0">{{translate('messages.date')}}</th>
+                            <th class="border-0">Reviewer</th>
+                            <th class="border-0">Order Id</th>
+                            <th class="border-0">Reviews</th>
+                            <th class="border-0">Date</th>
                         </tr>
                         </thead>
 
@@ -481,7 +475,7 @@
                                             </div>
                                         </a>
                                     @else
-                                        {{translate('messages.customer_not_found')}}
+                                        Customer Not Found
                                     @endif
                                 </td>
                                 <td>
@@ -519,7 +513,7 @@
                 <div class="empty--data">
                     <img src="{{asset('/public/assets/admin/svg/illustrations/sorry.svg')}}" alt="public">
                     <h5>
-                        {{translate('no_data_found')}}
+                        No data found
                     </h5>
                 </div>
                 @endif
@@ -533,14 +527,14 @@
 <script>
     function request_alert(url, message) {
         Swal.fire({
-            title: '{{translate('messages.are_you_sure')}}',
+            title: 'Are you sure',
             text: message,
             type: 'warning',
             showCancelButton: true,
             cancelButtonColor: 'default',
             confirmButtonColor: '#FC6A57',
-            cancelButtonText: '{{translate('messages.no')}}',
-            confirmButtonText: '{{translate('messages.yes')}}',
+            cancelButtonText: 'No',
+            confirmButtonText: 'Yes',
             reverseButtons: true
         }).then((result) => {
             if (result.value) {

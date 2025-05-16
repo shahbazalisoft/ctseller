@@ -1,6 +1,6 @@
 @extends('layouts.admin.app')
 
-@section('title',translate('Update delivery-man'))
+@section('title','Update Delivery-man')
 
 @push('css_or_js')
     <link rel="stylesheet" href="{{asset('/public/assets/admin/css/intlTelInput.css')}}"/>
@@ -14,11 +14,11 @@
                 <span class="page-header-icon">
                     <img src="{{asset('public/assets/admin/img/edit.png')}}" class="w--26" alt="">
                 </span>
-                <span>{{translate('messages.update_deliveryman')}}</span>
+                <span>Update Delivery-man</span>
             </h1>
         </div>
         <!-- End Page Header -->
-        <form action="{{route('admin.users.delivery-man.update',[$delivery_man['id']])}}" method="post" class="js-validate"
+        <form action="{{route('admin.delivery-man.update',[$delivery_man['id']])}}" method="post" class="js-validate"
                 enctype="multipart/form-data">
             @csrf
             <div class="card">
@@ -26,7 +26,7 @@
                     <h5 class="card-title">
                         <span class="card-title-icon"><i class="tio-user"></i></span>
                         <span>
-                            {{translate('general_information')}}
+                            General Information
                         </span>
                     </h5>
                 </div>
@@ -36,58 +36,42 @@
                             <div class="row g-3">
                                 <div class="col-sm-6">
                                     <div class="form-group mb-0">
-                                        <label class="input-label" for="exampleFormControlInput1">{{translate('messages.first_name')}}</label>
+                                        <label class="input-label" for="exampleFormControlInput1">First Name</label>
                                         <input type="text" value="{{$delivery_man['f_name']}}" name="f_name"
-                                                class="form-control" placeholder="{{translate('messages.first_name')}}"
+                                                class="form-control" placeholder="First Name"
                                                 required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group mb-0">
-                                        <label class="input-label" for="exampleFormControlInput1">{{translate('messages.last_name')}}</label>
+                                        <label class="input-label" for="exampleFormControlInput1">Last Name</label>
                                         <input type="text" value="{{$delivery_man['l_name']}}" name="l_name"
-                                                class="form-control" placeholder="{{translate('messages.last_name')}}"
+                                                class="form-control" placeholder="Last Name"
                                                 required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group mb-0">
-                                        <label class="input-label" for="exampleFormControlInput1">{{translate('messages.email')}}</label>
+                                        <label class="input-label" for="exampleFormControlInput1">Email</label>
                                         <input type="email" value="{{$delivery_man['email']}}" name="email" class="form-control"
-                                                placeholder="{{ translate('messages.Ex:') }} ex@example.com"
+                                                placeholder="Ex: ex@example.com"
                                                 required>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group mb-0">
-                                        <label class="input-label" for="exampleFormControlInput1">{{translate('messages.deliveryman_type')}}</label>
+                                        <label class="input-label" for="exampleFormControlInput1">Deliveryman Type</label>
                                         <select name="earning" class="form-control" required>
-                                            <option value="1" {{$delivery_man->earning?'selected':''}}>{{translate('messages.freelancer')}}</option>
-                                            <option value="0" {{$delivery_man->earning?'':'selected'}}>{{translate('messages.salary_based')}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group mb-0">
-                                        <label class="input-label" for="exampleFormControlInput1">{{translate('messages.zone')}}</label>
-                                        <select name="zone_id" class="form-control">
-                                        @foreach(\App\Models\Zone::all() as $zone)
-                                            @if(isset(auth('admin')->user()->zone_id))
-                                                @if(auth('admin')->user()->zone_id == $zone->id)
-                                                    <option value="{{$zone->id}}" {{$zone->id == $delivery_man->zone_id?'selected':''}}>{{$zone->name}}</option>
-                                                @endif
-                                            @else
-                                            <option value="{{$zone->id}}" {{$zone->id == $delivery_man->zone_id?'selected':''}}>{{$zone->name}}</option>
-                                            @endif
-                                        @endforeach
+                                            <option value="1" {{$delivery_man->earning?'selected':''}}>Freelancer</option>
+                                            <option value="0" {{$delivery_man->earning?'':'selected'}}>Salary Based</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group m-0">
-                                        <label class="input-label" for="exampleFormControlInput1">{{translate('messages.vehicle')}}</label>
+                                        <label class="input-label" for="exampleFormControlInput1">Vehicle</label>
                                         <select name="vehicle_id" class="form-control js-select2-custom h--45px">
-                                            <option value="" readonly="true" hidden="true">{{ translate('messages.select_vehicle') }}</option>
+                                            <option value="" readonly="true" hidden="true">Select Vehicle</option>
                                         @foreach(\App\Models\DMVehicle::where('status',1)->get(['id','type']) as $v)
                                             <option value="{{$v->id}}" {{$v->id == $delivery_man->vehicle_id?'selected':''}}>{{$v->type}}</option>
                                         @endforeach
@@ -98,7 +82,7 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="d-flex flex-column h-100">
-                                <label>{{translate('messages.deliveryman_image')}} <small class="text-danger">* ( {{translate('messages.ratio')}} 1:1 )</small></label>
+                                <label>Deliveryman Image <small class="text-danger">* ( ratio 1:1 )</small></label>
                                 <center class="py-3 my-auto">
                                     <img class="img--100 rounded" id="viewer"
                                             src="{{asset('storage/app/public/delivery-man').'/'.$delivery_man['image']}}"
@@ -108,7 +92,7 @@
                                 <div class="custom-file">
                                     <input type="file" name="image" id="customFileEg1" class="custom-file-input"
                                             accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*">
-                                    <label class="custom-file-label" for="customFileEg1">{{translate('messages.choose_file')}}</label>
+                                    <label class="custom-file-label" for="customFileEg1">Choose File</label>
                                 </div>
                             </div>
                         </div>
@@ -116,31 +100,31 @@
                             <div class="row g-3">
                                 <div class="col-sm-6 col-lg-12">
                                     <div class="form-group mb-0">
-                                        <label class="input-label" for="exampleFormControlInput1">{{translate('messages.identity_type')}}</label>
+                                        <label class="input-label" for="exampleFormControlInput1">Identity Type</label>
                                         <select name="identity_type" class="form-control">
                                             <option
                                                 value="passport" {{$delivery_man['identity_type']=='passport'?'selected':''}}>
-                                                {{translate('messages.passport')}}
+                                                Passport
                                             </option>
                                             <option
                                                 value="driving_license" {{$delivery_man['identity_type']=='driving_license'?'selected':''}}>
-                                                {{translate('messages.driving_license')}}
+                                                Driving License
                                             </option>
-                                            <option value="nid" {{$delivery_man['identity_type']=='nid'?'selected':''}}>{{translate('messages.nid')}}
+                                            <option value="nid" {{$delivery_man['identity_type']=='nid'?'selected':''}}>nid
                                             </option>
                                             <option
                                                 value="store_id" {{$delivery_man['identity_type']=='store_id'?'selected':''}}>
-                                                {{translate('messages.store_id')}}
+                                                Store Id
                                             </option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-lg-12">
                                     <div class="form-group mb-0">
-                                        <label class="input-label" for="exampleFormControlInput1">{{translate('messages.identity_number')}}</label>
+                                        <label class="input-label" for="exampleFormControlInput1">Identity Number</label>
                                         <input type="text" name="identity_number" value="{{$delivery_man['identity_number']}}"
                                                 class="form-control"
-                                                placeholder="{{ translate('messages.Ex:') }} DH-23434-LS"
+                                                placeholder="Ex: DH-23434-LS"
                                                 required>
                                     </div>
                                 </div>
@@ -152,18 +136,20 @@
                                     <div class="row g-2">
                                         <div class="col-12 pb-0">
                                             <div class="form-group mb-0">
-                                                <label class="input-label" for="exampleFormControlInput1">{{translate('messages.identity_images')}} : </label>
+                                                <label class="input-label" for="exampleFormControlInput1">Identity Images : </label>
                                             </div>
                                         </div>
+                                        @if(json_decode($delivery_man['identity_image'],true))
                                         @foreach(json_decode($delivery_man['identity_image'],true) as $img)
                                         <div class="col-6 spartan_item_wrapper size--sm">
                                             <img class="rounded border" src="{{asset('storage/app/public/delivery-man').'/'.$img}}">
                                         </div>
                                         @endforeach
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="input-label" for="exampleFormControlInput1">{{translate('messages.update_identity_image')}}</label>
+                                    <label class="input-label" for="exampleFormControlInput1">Update identity image</label>
                                     <div>
                                         <div class="row g-2 mt-0" id="coba"></div>
                                     </div>
@@ -180,7 +166,7 @@
                             <i class="tio-user"></i>
                         </span>
                         <span>
-                            {{translate('messages.account_information')}}
+                            Account information
                         </span>
                     </h5>
                 </div>
@@ -188,22 +174,22 @@
                     <div class="row g-3">
                         <div class="col-sm-4">
                             <div class="form-group mb-0">
-                                <label class="input-label" for="exampleFormControlInput1">{{translate('messages.phone')}}</label>
+                                <label class="input-label" for="exampleFormControlInput1">Phone</label>
                                 <input type="text" id="phone" name="phone" value="{{$delivery_man['phone']}}" class="form-control"
-                                        placeholder="{{ translate('messages.Ex:') }} 017********"
+                                        placeholder="Ex: 017********"
                                         required>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="js-form-message form-group mb-0">
-                                <label class="input-label" for="signupSrPassword">{{translate('messages.password')}}
+                                <label class="input-label" for="signupSrPassword">Password
                                     <span class="form-label-secondary" data-toggle="tooltip" data-placement="right"
-        data-original-title="{{ translate('messages.Must_contain_at_least_one_number_and_one_uppercase_and_lowercase_letter_and_symbol,_and_at_least_8_or_more_characters') }}"><img src="{{ asset('/public/assets/admin/img/info-circle.svg') }}" alt="{{ translate('messages.Must_contain_at_least_one_number_and_one_uppercase_and_lowercase_letter_and_symbol,_and_at_least_8_or_more_characters') }}"></span>
+        data-original-title="Must contain at least one number and one uppercase and lowercase letter and symbol  and at least 8 or more characters"><img src="{{ asset('/public/assets/admin/img/info-circle.svg') }}" alt="Must contain at least one number and one uppercase and lowercase letter and symbol  and at least 8 or more characters"></span>
                                 </label>
 
                                 <div class="input-group input-group-merge">
-                                    <input type="password" class="js-toggle-password form-control" name="password" id="signupSrPassword"                                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="{{ translate('messages.Must_contain_at_least_one_number_and_one_uppercase_and_lowercase_letter_and_symbol,_and_at_least_8_or_more_characters') }}"
-                                    placeholder="{{ translate('messages.password_length_placeholder', ['length' => '8+']) }}"
+                                    <input type="password" class="js-toggle-password form-control" name="password" id="signupSrPassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter and symbol  and at least 8 or more characters"
+                                    placeholder="length characters required"
                                     aria-label="8+ characters required"
                                     data-msg="Your password is invalid. Please try again."
                                     data-hs-toggle-password-options='{
@@ -222,10 +208,10 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="js-form-message form-group mb-0">
-                                <label class="input-label" for="signupSrConfirmPassword">{{translate('messages.confirm_password')}}</label>
+                                <label class="input-label" for="signupSrConfirmPassword">Confirm password</label>
                                 <div class="input-group input-group-merge">
-                                <input type="password" class="js-toggle-password form-control" name="confirmPassword" id="signupSrConfirmPassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="{{ translate('messages.Must_contain_at_least_one_number_and_one_uppercase_and_lowercase_letter_and_symbol,_and_at_least_8_or_more_characters') }}"
-                                placeholder="{{ translate('messages.password_length_placeholder', ['length' => '8+']) }}"
+                                <input type="password" class="js-toggle-password form-control" name="confirmPassword" id="signupSrConfirmPassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter and symbol  and at least 8 or more characters"
+                                placeholder="length characters required"
                                 aria-label="8+ characters required"
                                         data-msg="Password does not match the confirm password."
                                         data-hs-toggle-password-options='{
@@ -246,8 +232,8 @@
                 </div>
             </div>
             <div class="btn--container justify-content-end mt-3">
-                <button type="reset" id="reset_btn" class="btn btn--reset">{{translate('messages.reset')}}</button>
-                <button type="submit" class="btn btn--primary">{{translate('messages.submit')}}</button>
+                <button type="reset" id="reset_btn" class="btn btn--reset">Reset</button>
+                <button type="submit" class="btn btn--primary">Submit</button>
             </div>
         </form>
     </div>
@@ -376,13 +362,13 @@
 
                 },
                 onExtensionErr: function (index, file) {
-                    toastr.error('{{translate('messages.please_only_input_png_or_jpg_type_file')}}', {
+                    toastr.error('Please only input png or jpg type file', {
                         CloseButton: true,
                         ProgressBar: true
                     });
                 },
                 onSizeErr: function (index, file) {
-                    toastr.error('{{translate('messages.file_size_too_big')}}', {
+                    toastr.error('File size too big', {
                         CloseButton: true,
                         ProgressBar: true
                     });

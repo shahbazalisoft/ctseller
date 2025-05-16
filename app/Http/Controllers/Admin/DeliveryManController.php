@@ -2,10 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\CentralLogics\Helpers;
 use App\Http\Controllers\Controller;
+use App\Models\Conversation;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 use App\Models\DeliveryMan;
+use App\Models\DMReview;
+use App\Models\UserInfo;
 use App\Models\Zone;
 use Illuminate\Http\Request;
+use Brian2694\Toastr\Facades\Toastr;
+
 
 class DeliveryManController extends Controller
 {
@@ -232,12 +242,9 @@ class DeliveryManController extends Controller
             'zone_id' => 'required',
             'earning' => 'required',
             'vehicle_id' => 'required',
-            'password' => ['required', Password::min(8)->mixedCase()->letters()->numbers()->symbols()->uncompromised()],
-        ], [
-            'f_name.required' => translate('messages.first_name_is_required'),
-            'zone_id.required' => translate('messages.select_a_zone'),
-            'vehicle_id.required' => translate('messages.select_a_vehicle'),
-            'earning.required' => translate('messages.select_dm_type')
+            'vehicle_id' => 'required',
+            'password' => ['required', Password::min(8)],
+            // 'password' => ['required', Password::min(8)->mixedCase()->letters()->numbers()->symbols()->uncompromised()],
         ]);
 
         if ($request->has('image')) {
@@ -273,8 +280,8 @@ class DeliveryManController extends Controller
         $dm->password = bcrypt($request->password);
         $dm->save();
 
-        Toastr::success(translate('messages.deliveryman_added_successfully'));
-        return redirect('admin/users/delivery-man/list');
+        Toastr::success('Deliveryman added successfully');
+        return redirect('admin/delivery-man/list');
     }
 
     public function edit($id)
@@ -293,13 +300,13 @@ class DeliveryManController extends Controller
                 $delivery_man->auth_token = null;
                 if (isset($delivery_man->fcm_token)) {
                     $data = [
-                        'title' => translate('messages.suspended'),
-                        'description' => translate('messages.your_account_has_been_suspended'),
+                        'title' => 'Suspended',
+                        'description' => 'Your account has been suspended',
                         'order_id' => '',
                         'image' => '',
                         'type' => 'block'
                     ];
-                    Helpers::send_push_notif_to_device($delivery_man->fcm_token, $data);
+                    // Helpers::send_push_notif_to_device($delivery_man->fcm_token, $data);
 
                     DB::table('user_notifications')->insert([
                         'data' => json_encode($data),
@@ -310,17 +317,17 @@ class DeliveryManController extends Controller
                 }
 
                 $mail_status = Helpers::get_mail_status('suspend_mail_status_dm');
-                if (config('mail.status') && $mail_status == '1') {
-                    Mail::to($delivery_man['email'])->send(new \App\Mail\DmSuspendMail($delivery_man['f_name']));
-                }
+                // if (config('mail.status') && $mail_status == '1') {
+                //     Mail::to($delivery_man['email'])->send(new \App\Mail\DmSuspendMail($delivery_man['f_name']));
+                // }
             }
         } catch (\Exception $e) {
-            Toastr::warning(translate('messages.push_notification_faild'));
+            Toastr::warning('Push notification faild');
         }
 
         $delivery_man->save();
 
-        Toastr::success(translate('messages.deliveryman_status_updated'));
+        Toastr::success('Deliveryman status updated');
         return back();
     }
 
@@ -340,7 +347,7 @@ class DeliveryManController extends Controller
 
         $delivery_man->save();
 
-        Toastr::success(translate('messages.deliveryman_type_updated'));
+        Toastr::success('Deliveryman type updated');
         return back();
     }
 
@@ -354,20 +361,20 @@ class DeliveryManController extends Controller
             if ($request->status == 'approved') {
 
                 $mail_status = Helpers::get_mail_status('approve_mail_status_dm');
-                if (config('mail.status') && $mail_status == '1') {
-                    Mail::to($delivery_man->email)->send(new \App\Mail\DmSelfRegistration('approved', $delivery_man->f_name . ' ' . $delivery_man->l_name));
-                }
+                // if (config('mail.status') && $mail_status == '1') {
+                //     Mail::to($delivery_man->email)->send(new \App\Mail\DmSelfRegistration('approved', $delivery_man->f_name . ' ' . $delivery_man->l_name));
+                // }
             } else {
 
                 $mail_status = Helpers::get_mail_status('deny_mail_status_dm');
-                if (config('mail.status') && $mail_status == '1') {
-                    Mail::to($delivery_man->email)->send(new \App\Mail\DmSelfRegistration('denied', $delivery_man->f_name . ' ' . $delivery_man->l_name));
-                }
+                // if (config('mail.status') && $mail_status == '1') {
+                //     Mail::to($delivery_man->email)->send(new \App\Mail\DmSelfRegistration('denied', $delivery_man->f_name . ' ' . $delivery_man->l_name));
+                // }
             }
         } catch (\Exception $ex) {
             info($ex->getMessage());
         }
-        Toastr::success(translate('messages.application_status_updated_successfully'));
+        Toastr::success('Application status updated successfully');
         return back();
     }
 
@@ -382,10 +389,6 @@ class DeliveryManController extends Controller
             'vehicle_id' => 'required',
             'earning' => 'required',
             'password' => ['nullable', Password::min(8)->mixedCase()->letters()->numbers()->symbols()->uncompromised()],
-        ], [
-            'f_name.required' => translate('messages.first_name_is_required'),
-            'vehicle_id.required' => translate('messages.select_a_vehicle'),
-            'earning.required' => translate('messages.select_dm_type')
         ]);
 
         $delivery_man = DeliveryMan::find($id);
@@ -433,8 +436,8 @@ class DeliveryManController extends Controller
             $userinfo->image = $image_name;
             $userinfo->save();
         }
-        Toastr::success(translate('messages.deliveryman_updated_successfully'));
-        return redirect('admin/users/delivery-man/list');
+        Toastr::success('Deliveryman updated successfully');
+        return redirect('admin/delivery-man/list');
     }
 
     public function delete(Request $request)
@@ -444,9 +447,11 @@ class DeliveryManController extends Controller
             Storage::disk('public')->delete('delivery-man/' . $delivery_man['image']);
         }
 
-        foreach (json_decode($delivery_man['identity_image'], true) as $img) {
-            if (Storage::disk('public')->exists('delivery-man/' . $img)) {
-                Storage::disk('public')->delete('delivery-man/' . $img);
+        if($delivery_man['identity_image']){
+            foreach (json_decode($delivery_man['identity_image'], true) as $img) {
+                if (Storage::disk('public')->exists('delivery-man/' . $img)) {
+                    Storage::disk('public')->delete('delivery-man/' . $img);
+                }
             }
         }
 
@@ -456,7 +461,7 @@ class DeliveryManController extends Controller
         }
 
         $delivery_man->delete();
-        Toastr::success(translate('messages.deliveryman_deleted_successfully'));
+        Toastr::success('Deliveryman deleted successfully');
         return back();
     }
 

@@ -6,6 +6,7 @@ use App\Models\BusinessSetting;
 use App\Models\Currency;
 use Illuminate\Support\Facades\Storage;
 use App\Models\DataSetting;
+use App\Models\DMReview;
 
 class Helpers
 {
@@ -182,6 +183,11 @@ class Helpers
         }
 
         return false;
+    }
+
+    public static function dm_rating_count($deliveryman_id, $rating)
+    {
+        return DMReview::where(['delivery_man_id' => $deliveryman_id, 'rating' => $rating])->count();
     }
 
 }

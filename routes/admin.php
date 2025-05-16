@@ -151,6 +151,13 @@ Route::middleware(['web'])->prefix('admin')->as('admin.')->group(function () {
         Route::post('search', 'search')->name('search');
         Route::post('active-search', 'active_search')->name('active-search');
 
+        Route::prefix('reviews')->as('reviews.')->controller(DeliveryManController::class)->group(function () {
+            Route::get('list', 'reviews_list')->name('list');
+            Route::get('export', 'reviews_export')->name('export');
+            Route::get('search', 'review_search')->name('search');
+            Route::get('status/{id}/{status}', 'reviews_status')->name('status');
+        });
+
         // Delivery Man Vehicle Routes
         Route::prefix('vehicle')->as('vehicle.')->controller(DmVehicleController::class)->group(function () {
             Route::get('list', 'list')->name('list');

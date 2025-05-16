@@ -1,6 +1,6 @@
 @extends('layouts.admin.app')
 
-@section('title',translate('messages.Delivery Man Preview'))
+@section('title','Delivery Man Preview')
 
 @push('css_or_js')
 
@@ -21,13 +21,13 @@
                     <!-- Nav -->
                     <ul class="nav nav-tabs nav--tabs border-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.users.delivery-man.preview', ['id'=>$dm->id, 'tab'=> 'info'])}}"  aria-disabled="true">{{translate('messages.info')}}</a>
+                            <a class="nav-link" href="{{route('admin.delivery-man.preview', ['id'=>$dm->id, 'tab'=> 'info'])}}"  aria-disabled="true">Info</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.users.delivery-man.preview', ['id'=>$dm->id, 'tab'=> 'transaction'])}}"  aria-disabled="true">{{translate('messages.transaction')}}</a>
+                            <a class="nav-link" href="{{route('admin.delivery-man.preview', ['id'=>$dm->id, 'tab'=> 'transaction'])}}"  aria-disabled="true">Transaction</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{route('admin.users.delivery-man.preview', ['id'=>$dm->id, 'tab'=> 'conversation'])}}"  aria-disabled="true">{{translate('messages.conversations')}}</a>
+                            <a class="nav-link active" href="{{route('admin.delivery-man.preview', ['id'=>$dm->id, 'tab'=> 'conversation'])}}"  aria-disabled="true">Conversations</a>
                         </li>
                     </ul>
                     <!-- End Nav -->
@@ -39,7 +39,7 @@
         <div class="content container-fluid">
             <!-- Page Header -->
             <div class="page-header">
-                <h1 class="page-header-title">{{ translate('messages.conversation_list') }}</h1>
+                <h1 class="page-header-title">Conversation List</h1>
             </div>
             <!-- End Page Header -->
 
@@ -52,7 +52,7 @@
                                 <div class="input-group-prepend border-inline-end-0">
                                     <span class="input-group-text border-inline-end-0" id="basic-addon1"><i class="tio-search"></i></span>
                                 </div>
-                                <input type="text" class="form-control border-inline-start-0 pl-1" id="serach" placeholder="{{ translate('messages.search') }}" aria-label="Username"
+                                <input type="text" class="form-control border-inline-start-0 pl-1" id="serach" placeholder="Search" aria-label="Username"
                                     aria-describedby="basic-addon1" autocomplete="off">
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                 </div>
                 <div class="col-lg-8 col-nd-6" id="dm-view-conversation">
                     <center class="mt-2">
-                        <h4 class="initial-20">{{ translate('messages.view_conversation') }}
+                        <h4 class="initial-20">View Conversation
                         </h4>
                     </center>
                     {{-- view here --}}
@@ -84,7 +84,7 @@
     function viewConvs(url, id_to_active, conv_id, sender_id) {
         $('.customer-list').removeClass('conv-active');
         $('#' + id_to_active).addClass('conv-active');
-        let new_url= "{{route('admin.users.delivery-man.preview', ['id'=>$dm->id, 'tab'=> 'conversation'])}}" + '?conversation=' + conv_id+ '&user=' + sender_id;
+        let new_url= "{{route('admin.delivery-man.preview', ['id'=>$dm->id, 'tab'=> 'conversation'])}}" + '?conversation=' + conv_id+ '&user=' + sender_id;
             $.get({
                 url: url,
                 success: function(data) {

@@ -239,7 +239,7 @@
                             <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                         </li>
                         <li
-                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/users/employee*') ? 'active' : '' }} ">
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/employee*') ? 'active' : '' }} ">
                             <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
                                 title="Employee">
                                 <i class="tio-incognito nav-icon"></i>
@@ -273,31 +273,29 @@
                         </li>
                     @endif
 
-                    <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/category*') ? 'active' : '' }}">
+                    <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/delivery-man*') ? 'active' : '' }}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
                             title="categories">
                             <i class="tio-running nav-icon"></i>
                             <span
                                 class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Deliveryman</span>
                         </a>
-                        <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
-                            style="display:{{ Request::is('admin/category*') ? 'block' : 'none' }}">
-                            <li
-                                class="nav-item {{ Request::is('admin/category/sub-category') || Request::is('admin/category/sub-category/add') ? 'active' : '' }}">
+                        <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="display:{{ Request::is('admin/delivery-man*') ? 'block' : 'none' }}">
+                            <li class="nav-item {{ Request::is('admin/delivery-man/list') || Request::is('admin/delivery-man/add') || Request::is('admin/delivery-man/edit*') || Request::is('admin/delivery-man/preview*') ? 'active' : '' }}">
                                 <a class="nav-link " href="{{ route('admin.delivery-man.list') }}"
                                     title="Sub Category">
                                     <span class="tio-circle nav-indicator-icon"></span>
                                     <span class="text-truncate">Deliveryman list</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item {{ Request::is('admin/delivery-man/vehicle/list') || Request::is('admin/delivery-man/vehicle/add') || Request::is('admin/delivery-man/vehicle/edit*') ? 'active' : '' }}">
                                 <a class="nav-link " href="{{ route('admin.delivery-man.vehicle.list') }}" title="sub_category">
                                     <span class="tio-circle nav-indicator-icon"></span>
                                     <span class="text-truncate">Vehicles category</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link " href="" title="sub_category">
+                            <li class="nav-item {{ Request::is('admin/delivery-man/reviews/list') ? 'active' : '' }}">
+                                <a class="nav-link " href="{{ route('admin.delivery-man.reviews.list') }}" title="sub_category">
                                     <span class="tio-circle nav-indicator-icon"></span>
                                     <span class="text-truncate">Deliveryman reviews</span>
                                 </a>
