@@ -1,5 +1,13 @@
 <!DOCTYPE html>
-<html dir="" lang=""  class="">
+<?php
+    if (env('APP_MODE') == 'demo') {
+        $site_direction = session()->get('site_direction_vendor');
+    }else{
+        $site_direction = session()->has('vendor_site_direction')?session()->get('vendor_site_direction'):'ltr';
+    }
+
+?>
+<html dir="{{ $site_direction }}" lang="{{ str_replace('_', '-', app()->getLocale()) }}"  class="{{ $site_direction === 'rtl'?'active':'' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -8,12 +16,13 @@
     <!-- Title -->
     <title>@yield('title')</title>
     <!-- Favicon -->
+    @php($logo=\App\Models\BusinessSetting::where(['key'=>'icon'])->first()->value)
     <link rel="shortcut icon" href="">
-    <link rel="icon" type="image/x-icon" href="http://localhost/sloop_app/sloop/storage/app/public/business/2024-01-13-65a2117db0547.png">
+    <link rel="icon" type="image/x-icon" href="{{asset('storage/app/public/business/'.$logo??'')}}">
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
     <!-- CSS Implementing Plugins -->
-    <link rel="stylesheet" href="http://localhost/setupdashboard/public/assets/admin/css/vendor.min.css">
+    <link rel="stylesheet" href="{{asset('public/assets/admin')}}/css/vendor.min.css">
     <link rel="stylesheet" href="{{asset('public/assets/admin')}}/vendor/icon-set/style.css">
     <!-- CSS Front Template -->
     <link rel="stylesheet" href="{{asset('public/assets/admin')}}/css/bootstrap.min.css">
@@ -48,12 +57,12 @@
 {{--loader--}}
 
 <!-- Builder -->
-{{-- @include('layouts.vendor.partials._front-settings') --}}
+@include('layouts.vendor.partials._front-settings')
 <!-- End Builder -->
 
 <!-- JS Preview mode only -->
-{{-- @include('layouts.vendor.partials._header') --}}
-{{-- @include('layouts.vendor.partials._sidebar') --}}
+@include('layouts.vendor.partials._header')
+@include('layouts.vendor.partials._sidebar')
 <!-- END ONLY DEV -->
 
 <main id="content" role="main" class="main pointer-event">
@@ -62,7 +71,7 @@
 <!-- End Content -->
 
     <!-- Footer -->
-{{-- @include('layouts.vendor.partials._footer') --}}
+@include('layouts.vendor.partials._footer')
 <!-- End Footer -->
 
 
@@ -85,9 +94,9 @@
                             </div>
                         </div>
                         <div class="btn--container justify-content-center">
-                            <button type="button" id="toggle-ok-button" class="btn btn--primary min-w-120" data-dismiss="modal" onclick="confirmToggle()">{{translate('Ok')}}</button>
+                            <button type="button" id="toggle-ok-button" class="btn btn--primary min-w-120" data-dismiss="modal" onclick="confirmToggle()">{{__('Ok')}}</button>
                             <button id="reset_btn" type="reset" class="btn btn--cancel min-w-120" data-dismiss="modal">
-                                {{translate("Cancel")}}
+                                {{__("Cancel")}}
                             </button>
                         </div>
                     </div>
@@ -115,9 +124,9 @@
                             </div>
                         </div>
                         <div class="btn--container justify-content-center">
-                            <button type="button" id="toggle-status-ok-button" class="btn btn--primary min-w-120" data-dismiss="modal" onclick="confirmStatusToggle()">{{translate('Ok')}}</button>
+                            <button type="button" id="toggle-status-ok-button" class="btn btn--primary min-w-120" data-dismiss="modal" onclick="confirmStatusToggle()">{{__('Ok')}}</button>
                             <button id="reset_btn" type="reset" class="btn btn--cancel min-w-120" data-dismiss="modal">
-                                {{translate("Cancel")}}
+                                {{__("Cancel")}}
                             </button>
                         </div>
                     </div>
@@ -133,10 +142,10 @@
                         <div class="col-12">
                             <center>
                                 <h2>
-                                    <i class="tio-shopping-cart-outlined"></i>You have new order, Check Please
+                                    <i class="tio-shopping-cart-outlined"></i> {{__('messages.You have new order, Check Please.')}}
                                 </h2>
                                 <hr>
-                                <button onclick="check_order()" class="btn btn-primary">Ok, let me check</button>
+                                <button onclick="check_order()" class="btn btn-primary">{{__('messages.Ok, let me check')}}</button>
                             </center>
                         </div>
                     </div>
@@ -156,21 +165,11 @@
 @stack('script')
 
 <!-- JS Front -->
-<script src="{{asset('public/assets/admin')}}/js/custom.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase.js"></script>
-<!-- JS Implementing Plugins -->
-
-@stack('script')
-<!-- JS Front -->
 <script src="{{asset('public/assets/admin')}}/js/vendor.min.js"></script>
 <script src="{{asset('public/assets/admin')}}/js/theme.min.js"></script>
 <script src="{{asset('public/assets/admin')}}/js/sweet_alert.js"></script>
-<script src="{{asset('public/assets/admin')}}/js/bootstrap-tour-standalone.min.js"></script>
-<script src="{{asset('public/assets/admin')}}/js/"></script>
-<script src="{{asset('public/assets/admin/js/owl.min.js')}}"></script>
-<script src="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"></script>
-<script src="{{asset('public/assets/admin')}}/js/emogi-area.js"></script>
 <script src="{{asset('public/assets/admin')}}/js/toastr.js"></script>
+<script src="{{asset('public/assets/admin')}}/js/emogi-area.js"></script>
 {!! Toastr::message() !!}
 
 @if ($errors->any())
@@ -202,6 +201,28 @@
         } else {
             $(".direction-toggle").find('span').text('Toggle RTL')
         }
+
+        function setDirection(status) {
+            if (status == 1) {
+                $("html").attr('dir', 'ltr');
+                $(".direction-toggle").find('span').text('Toggle RTL')
+            } else {
+                $("html").attr('dir', 'rtl');
+                $(".direction-toggle").find('span').text('Toggle LTR')
+            }
+            $.get({
+                    url: '{{ route('vendor.site_direction') }}',
+                    dataType: 'json',
+                    data: {
+                        status: status,
+                    },
+                    success: function() {
+                        alert(ok);
+                    },
+
+                });
+            }
+        });
 
 </script>
 <!-- JS Plugins Init. -->
@@ -316,7 +337,7 @@
 
 @stack('script_2')
 <audio id="myAudio">
-    <source src="{{asset('public/assets/admin/sound/notification.mp3')}}" type="audio/mpeg">
+    <source src="{{asset('assets/admin/sound/notification.mp3')}}" type="audio/mpeg">
 </audio>
 
 <script>
@@ -333,14 +354,14 @@
 <script>
     function route_alert(route, message) {
         Swal.fire({
-            title: 'Are you sure?',
+            title: '{{ __('messages.Are you sure?') }}',
             text: message,
             type: 'warning',
             showCancelButton: true,
             cancelButtonColor: 'default',
             confirmButtonColor: '#FC6A57',
-            cancelButtonText: 'No',
-            confirmButtonText: 'Yes',
+            cancelButtonText: '{{ __('messages.no') }}',
+            confirmButtonText: '{{ __('messages.Yes') }}',
             reverseButtons: true
         }).then((result) => {
             if (result.value) {
@@ -351,14 +372,14 @@
 
     function form_alert(id, message) {
         Swal.fire({
-            title: 'Are you sure?',
+            title: '{{ __('messages.Are you sure?') }}',
             text: message,
             type: 'warning',
             showCancelButton: true,
             cancelButtonColor: 'default',
             confirmButtonColor: '#FC6A57',
-            cancelButtonText: 'No',
-            confirmButtonText: 'Yes',
+            cancelButtonText: '{{ __('messages.no') }}',
+            confirmButtonText: '{{ __('messages.Yes') }}',
             reverseButtons: true
         }).then((result) => {
             if (result.value) {
@@ -375,7 +396,64 @@
 </script>
 
 <script>
-    
+    @php($fcm_credentials = \App\CentralLogics\Helpers::get_business_settings('fcm_credentials'))
+    var firebaseConfig = {
+        apiKey: "{{isset($fcm_credentials['apiKey']) ? $fcm_credentials['apiKey'] : ''}}",
+        authDomain: "{{isset($fcm_credentials['authDomain']) ? $fcm_credentials['authDomain'] : ''}}",
+        projectId: "{{isset($fcm_credentials['projectId']) ? $fcm_credentials['projectId'] : ''}}",
+        storageBucket: "{{isset($fcm_credentials['storageBucket']) ? $fcm_credentials['storageBucket'] : ''}}",
+        messagingSenderId: "{{isset($fcm_credentials['messagingSenderId']) ? $fcm_credentials['messagingSenderId'] : ''}}",
+        appId: "{{isset($fcm_credentials['appId']) ? $fcm_credentials['appId'] : ''}}",
+        measurementId: "{{isset($fcm_credentials['measurementId']) ? $fcm_credentials['measurementId'] : ''}}"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+    function startFCM() {
+
+messaging
+    .requestPermission()
+    .then(function () {
+        return messaging.getToken()
+
+    }).then(function (response) {
+        @php($store_id=\App\CentralLogics\Helpers::get_store_id())
+        subscribeTokenToTopic(response, "store_panel_{{$store_id}}_message");
+        // $.ajaxSetup({
+        //     headers: {
+        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //     }
+        // });
+        // $.ajax({
+        //     url: '{{ route('vendor.store.token') }}',
+        //     type: 'POST',
+        //     data: {
+        //         token: response
+        //     },
+        //     // error: function (error) {
+        //     //     alert(error);
+        //     // },
+        // });
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
+@php($key = \App\Models\BusinessSetting::where('key', 'push_notification_key')->first())
+function subscribeTokenToTopic(token, topic) {
+fetch('https://iid.googleapis.com/iid/v1/' + token + '/rel/topics/' + topic, {
+    method: 'POST',
+    headers: new Headers({
+        'Authorization': 'key={{ $key ? $key->value : '' }}'
+    })
+}).then(response => {
+    if (response.status < 200 || response.status >= 400) {
+        throw 'Error subscribing to topic: ' + response.status + ' - ' + response.text();
+    }
+    console.log('Subscribed to "' + topic + '"');
+}).catch(error => {
+    console.error(error);
+})
+}
     function getUrlParameter(sParam) {
             var sPageURL = window.location.search.substring(1);
             var sURLVariables = sPageURL.split('&');
@@ -389,7 +467,7 @@
 
         function converationList() {
             $.ajax({
-                url: "#",
+                url: "{{ route('vendor.message.list') }}",
                 success: function(data) {
                     $('#conversation-list').empty();
                     $("#conversation-list").append(data.html);
@@ -411,11 +489,41 @@
                 }
             })
         }
+        @php($order_notification_type = \App\Models\BusinessSetting::where('key', 'order_notification_type')->first())
+        @php($order_notification_type = $order_notification_type ? $order_notification_type->value : 'firebase')
+        var order_type = 'all';
+        messaging.onMessage(function (payload) {
+            if(payload.data.order_id && payload.data.type == 'new_order'){
+                @if(\App\CentralLogics\Helpers::employee_module_permission_check('order') && $order_notification_type == 'firebase')
+                    order_type = payload.data.order_type
+                    playAudio();
+                    $('#popup-modal').appendTo("body").modal('show');
+                @endif
+            }else if(payload.data.type == 'message'){
+            var conversation_id = getUrlParameter('conversation');
+            var user_id = getUrlParameter('user');
+            var url= '{{url('/')}}/store-panel/message/view/'+conversation_id+'/' + user_id;
+            $.ajax({
+                url: url,
+                success: function(data) {
+                    $('#view-conversation').html(data.view);
+                }
+            })
+            toastr.success('{{ __('messages.New message arrived') }}', {
+                        CloseButton: true,
+                        ProgressBar: true
+                    });
 
-        @if('sdffg' == 'manual')
+            if($('#conversation-list').scrollTop() == 0){
+                converationList();
+            }
+        }
+        });
+
+        @if(\App\CentralLogics\Helpers::employee_module_permission_check('order') && $order_notification_type == 'manual')
         setInterval(function () {
             $.get({
-                url: '#',
+                url: '{{route('vendor.get-store-data')}}',
                 dataType: 'json',
                 success: function (response) {
                     let data = response.data;
@@ -441,6 +549,8 @@
             }
             location.href = '{{url('/')}}/store-panel/order/list/all';
         }
+
+        startFCM();
         converationList();
         if(getUrlParameter('conversation')){
             conversationView();
@@ -449,7 +559,7 @@
 
 <script>
     function call_demo(){
-        toastr.info('{{ translate('Update option is disabled for demo!') }}', {
+        toastr.info('{{ __('Update option is disabled for demo!') }}', {
             CloseButton: true,
             ProgressBar: true
         });
@@ -476,12 +586,12 @@
         if ($('#'+toggle_id).is(':checked')) {
             $('#toggle-title').empty().append(on_title);
             $('#toggle-message').empty().append(on_message);
-            $('#toggle-image').attr('src', "{{asset('/public/assets/admin/img/modal')}}/"+on_image);
+            $('#toggle-image').attr('src', "{{asset('/assets/admin/img/modal')}}/"+on_image);
             $('#toggle-ok-button').attr('toggle-ok-button', toggle_id);
         } else {
             $('#toggle-title').empty().append(off_title);
             $('#toggle-message').empty().append(off_message);
-            $('#toggle-image').attr('src', "{{asset('/public/assets/admin/img/modal')}}/"+off_image);
+            $('#toggle-image').attr('src', "{{asset('/assets/admin/img/modal')}}/"+off_image);
             $('#toggle-ok-button').attr('toggle-ok-button', toggle_id);
         }
         $('#toggle-modal').modal('show');
@@ -527,12 +637,12 @@
         if ($('#'+toggle_id).is(':checked')) {
             $('#toggle-status-title').empty().append(on_title);
             $('#toggle-status-message').empty().append(on_message);
-            $('#toggle-status-image').attr('src', "{{asset('/public/assets/admin/img/modal')}}/"+on_image);
+            $('#toggle-status-image').attr('src', "{{asset('/assets/admin/img/modal')}}/"+on_image);
             $('#toggle-status-ok-button').attr('toggle-ok-button', toggle_id);
         } else {
             $('#toggle-status-title').empty().append(off_title);
             $('#toggle-status-message').empty().append(off_message);
-            $('#toggle-status-image').attr('src', "{{asset('/public/assets/admin/img/modal')}}/"+off_image);
+            $('#toggle-status-image').attr('src', "{{asset('/assets/admin/img/modal')}}/"+off_image);
             $('#toggle-status-ok-button').attr('toggle-ok-button', toggle_id);
         }
         $('#toggle-status-modal').modal('show');
@@ -550,14 +660,6 @@
         $('#'+toggle_id+'_form').submit();
 
     }
-
-    function formatPrice(price) {
-        if (price === parseInt(price, 10)) {
-            return Math.floor(price);
-        } else {
-            return price.toFixed(2);
-        }
-    }
 </script>
 
 
@@ -565,6 +667,8 @@
 
 
 <!-- IE Support -->
-
+<script>
+    if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) document.write('<script src="{{asset('assets/admin')}}/vendor/babel-polyfill/polyfill.min.js"><\/script>');
+</script>
 </body>
 </html>

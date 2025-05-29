@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\VendorMiddleware;
 use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -14,6 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         // Register custom route file inside 'then' callback
         then: function () {
             require base_path('routes/admin.php');
+            require base_path('routes/vendor.php');
+
         },
     )
     // ->withRoutes(function () {
@@ -21,7 +24,8 @@ return Application::configure(basePath: dirname(__DIR__))
     // })
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'admin' => AdminMiddleware::class
+            'admin' => AdminMiddleware::class,
+            'vendor' => VendorMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

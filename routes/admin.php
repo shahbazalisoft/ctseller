@@ -18,8 +18,53 @@ use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\VendorController;
 
 
-Route::middleware(['web'])->prefix('admin')->as('admin.')->group(function () {
+Route::middleware(['web', 'admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('order/generate-invoice/{id}', [OrderController::class, 'generate_invoice'])->name('order.generate-invoice');
+    Route::get('order/print-invoice/{id}', [OrderController::class, 'print_invoice'])->name('order.print-invoice');
+    Route::get('order/status', [OrderController::class, 'status'])->name('status');
+    Route::get('order/offline-payment', [OrderController::class, 'offline_payment'])->name('order.offline_payment');
+    Route::prefix('order')->as('order.')->middleware(['module:order'])->controller(OrderController::class)->group(function () {
+        Route::get('list/{status}', 'list')->name('list');
+        Route::get('details/{id}', 'details')->name('details');
+        Route::get('all-details/{id}', 'all_details')->name('all-details');
+        Route::get('view/{id}', 'view')->name('view');
+        Route::post('update-shipping/{order}', 'update_shipping')->name('update-shipping');
+        Route::delete('delete/{id}', 'delete')->name('delete');
+        Route::get('add-delivery-man/{order_id}/{delivery_man_id}', 'add_delivery_man')->name('add-delivery-man');
+        Route::get('payment-status', 'payment_status')->name('payment-status');
+
+        Route::post('add-payment-ref-code/{id}', 'add_payment_ref_code')->name('add-payment-ref-code');
+        Route::post('add-order-proof/{id}', 'add_order_proof')->name('add-order-proof');
+        Route::get('remove-proof-image', 'remove_proof_image')->name('remove-proof-image');
+        Route::get('store-filter/{store_id}', 'restaurnt_filter')->name('store-filter');
+        Route::get('filter/reset', 'filter_reset');
+        Route::post('filter', 'filter')->name('filter');
+        Route::get('search', 'search')->name('search');
+        Route::post('store/search', 'store_order_search')->name('store-search');
+        Route::get('store/export', 'store_order_export')->name('store-export');
+        //order update
+        Route::post('add-to-cart', 'add_to_cart')->name('add-to-cart');
+        Route::post('remove-from-cart', 'remove_from_cart')->name('remove-from-cart');
+        Route::get('update/{order}', 'update')->name('update');
+        Route::get('edit-order/{order}', 'edit')->name('edit');
+        Route::get('quick-view', 'quick_view')->name('quick-view');
+        Route::get('quick-view-cart-item', 'quick_view_cart_item')->name('quick-view-cart-item');
+        Route::get('export-orders/{file_type}/{status}/{type}', 'export_orders')->name('export');
+        Route::get('offline/payment/list/{status}', 'offline_verification_list')->name('offline_verification_list');
+    });
+    // Refund
+    Route::prefix('refund')->as('refund.')->middleware(['module:order'])->controller(OrderController::class)->group(function () {
+        Route::get('settings', 'refund_settings')->name('refund_settings');
+        Route::get('refund_mode', 'refund_mode')->name('refund_mode');
+        Route::post('refund_reason', 'refund_reason')->name('refund_reason');
+        Route::get('/status/{id}/{status}', 'reason_status')->name('reason_status');
+        Route::put('reason_edit/', 'reason_edit')->name('reason_edit');
+        Route::delete('reason_delete/{id}', 'reason_delete')->name('reason_delete');
+        Route::put('order_refund_rejection/', 'order_refund_rejection')->name('order_refund_rejection');
+        Route::get('/{status}', 'list')->name('refund_attr');
+    });
     #Category Management
     Route::prefix('category')->as('category.')->controller(CategoryController::class)->group(function () {
         Route::get('/', 'index')->name('index');
@@ -96,6 +141,7 @@ Route::middleware(['web'])->prefix('admin')->as('admin.')->group(function () {
         Route::get('pending-requests', 'pending_requests')->name('pending-requests');
         Route::get('deny-requests', 'deny_requests')->name('deny-requests');
         Route::get('update-application/{id}/{status}', 'update_application')->name('application');
+        Route::get('download/{id}/{ids}', 'docDownload')->name('doc-download');
     });
 
     #Retailer Management
@@ -170,8 +216,4 @@ Route::middleware(['web'])->prefix('admin')->as('admin.')->group(function () {
             Route::get('view/{vehicle}', 'view')->name('view');
         });
     });
-});
-
-Route::controller(OrderController::class)->group(function () {
-    Route::get('/admin/order/list/{status}', 'index')->name('admin.order.list');
 });

@@ -41,15 +41,15 @@
                                 <div class="cmn--media right-dropdown-icon d-flex align-items-center">
                                     <div class="media-body pl-0 pr-2">
                                         <span class="card-title h5 text-right">
-                                            Shahbaz
-                                            Ali
+                                            {{\App\CentralLogics\Helpers::get_loggedin_user()->f_name}}
+                                            {{\App\CentralLogics\Helpers::get_loggedin_user()->l_name}}
                                         </span>
-                                        <span class="card-text">shahbazalisoft15@gmail.com</span>
+                                        <span class="card-text">{{\App\CentralLogics\Helpers::get_loggedin_user()->email}}</span>
                                     </div>
                                     <div class="avatar avatar-sm avatar-circle">
                                         <img class="avatar-img"
                                             onerror="this.src='{{asset('public/assets/admin/img/160x160/img1.jpg')}}'"
-                                            src="http://localhost/sloop_app/sloop/public/assets/admin/img/160x160/img1.jpg"
+                                            src="{{asset('storage/app/public/vendor')}}/{{\App\CentralLogics\Helpers::get_loggedin_user()->image}}"
                                             alt="Image Description">
                                         <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                                     </div>
@@ -63,12 +63,12 @@
                                         <div class="avatar avatar-sm avatar-circle mr-2">
                                             <img class="avatar-img"
                                                  onerror="this.src='{{asset('public/assets/admin/img/160x160/img1.jpg')}}'"
-                                                 src="http://localhost/sloop_app/sloop/public/assets/admin/img/160x160/img1.jpg"
+                                                 src="{{asset('storage/app/public/vendor')}}/{{\App\CentralLogics\Helpers::get_loggedin_user()->image}}"
                                                  alt="Owner image">
                                         </div>
                                         <div class="media-body">
-                                            <span class="card-title h5">Shahbaz Ali</span>
-                                            <span class="card-text">shahbazalisoft15@gmail.com</span>
+                                            <span class="card-title h5">{{\App\CentralLogics\Helpers::get_loggedin_user()->f_name}}</span>
+                                            <span class="card-text">{{\App\CentralLogics\Helpers::get_loggedin_user()->email}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -91,7 +91,7 @@
                                     cancelButtonText: 'Cancel',
                                     }).then((result) => {
                                     if (result.value) {
-                                        location.href='#';
+                                        location.href='{{route('logout')}}';
                                     } else{
                                     Swal.fire('Cancel', '', 'info')
                                     }

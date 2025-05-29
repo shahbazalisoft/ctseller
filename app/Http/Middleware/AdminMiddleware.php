@@ -16,18 +16,15 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Check if the admin user is authenticated
+        if(Auth::guard('admin')->user() && Auth::guard('admin')->user()->is_logged_in == 0){
+            auth()->guard('admin')->logout();
+        }
         if (Auth::guard('admin')->check()) {
-            // Log out the user if they are marked as not logged in
-            if (Auth::guard('admin')->user()->is_logged_in == 0) {
-                Auth::guard('admin')->logout();
-                return redirect()->route('login')->with('error', 'Your session has been terminated.');
-            }
-            // Allow the request to proceed
             return $next($request);
         }
 
         // Redirect to login if the user is not authenticated
-        return redirect()->route('login')->with('error', 'You must be logged in as admin to access this page.');
+        // return redirect()->route('login')->with('error', 'You must be logged in as admin to access this page.');
+        return redirect()->route('login', ['tab' => 'admin']);
     }
 }

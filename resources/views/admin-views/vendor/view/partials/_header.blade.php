@@ -12,8 +12,8 @@
             <div>
                 @if(Request::is("admin/store/view/{$store->id}"))
                     @if($store->vendor->status)
-                    <a href="{{route('admin.store.edit',[$store->id])}}" class="btn btn--primary float-right">
-                        <i class="tio-edit"></i> {{translate('messages.edit_store')}}
+                    <a href="{{route('admin.wholesaler.edit',[$store->id])}}" class="btn btn--primary float-right">
+                        <i class="tio-edit"></i> {{__('messages.edit_store')}}
                     </a>
                     @else
                         @if(!isset($store->vendor->status))
@@ -46,31 +46,31 @@
             <!-- Nav -->
             <ul class="nav nav-tabs page-header-tabs mb-2">
                 <li class="nav-item">
-                    <a class="nav-link {{request('tab')==null?'active':''}}" href="{{route('admin.store.view', $store->id)}}">{{translate('messages.overview')}}</a>
+                    <a class="nav-link {{request('tab')==null?'active':''}}" href="{{route('admin.wholesaler.view', $store->id)}}">{{__('messages.overview')}}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{request('tab')=='order'?'active':''}}" href="{{route('admin.store.view', ['store'=>$store->id, 'tab'=> 'order'])}}"  aria-disabled="true">{{translate('messages.orders')}}</a>
+                    <a class="nav-link {{request('tab')=='order'?'active':''}}" href="{{route('admin.wholesaler.view', ['store'=>$store->id, 'tab'=> 'order'])}}"  aria-disabled="true">{{__('messages.orders')}}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{request('tab')=='item'?'active':''}}" href="{{route('admin.store.view', ['store'=>$store->id, 'tab'=> 'item'])}}"  aria-disabled="true">{{translate('messages.items')}}</a>
+                    <a class="nav-link {{request('tab')=='item'?'active':''}}" href="{{route('admin.wholesaler.view', ['store'=>$store->id, 'tab'=> 'item'])}}"  aria-disabled="true">{{__('messages.items')}}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{request('tab')=='reviews'?'active':''}}" href="{{route('admin.store.view', ['store'=>$store->id, 'tab'=> 'reviews'])}}"  aria-disabled="true">{{translate('messages.reviews')}}</a>
+                    <a class="nav-link {{request('tab')=='reviews'?'active':''}}" href="{{route('admin.wholesaler.view', ['store'=>$store->id, 'tab'=> 'reviews'])}}"  aria-disabled="true">{{__('messages.reviews')}}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{request('tab')=='discount'?'active':''}}" href="{{route('admin.store.view', ['store'=>$store->id, 'tab'=> 'discount'])}}"  aria-disabled="true">{{translate('messages.discounts')}}</a>
+                    <a class="nav-link {{request('tab')=='discount'?'active':''}}" href="{{route('admin.wholesaler.view', ['store'=>$store->id, 'tab'=> 'discount'])}}"  aria-disabled="true">{{__('messages.discounts')}}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{request('tab')=='transaction'?'active':''}}" href="{{route('admin.store.view', ['store'=>$store->id, 'tab'=> 'transaction'])}}"  aria-disabled="true">{{translate('messages.transactions')}}</a>
+                    <a class="nav-link {{request('tab')=='transaction'?'active':''}}" href="{{route('admin.wholesaler.view', ['store'=>$store->id, 'tab'=> 'transaction'])}}"  aria-disabled="true">{{__('messages.transactions')}}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{request('tab')=='settings'?'active':''}}" href="{{route('admin.store.view', ['store'=>$store->id, 'tab'=> 'settings'])}}"  aria-disabled="true">{{translate('messages.settings')}}</a>
+                    <a class="nav-link {{request('tab')=='settings'?'active':''}}" href="{{route('admin.wholesaler.view', ['store'=>$store->id, 'tab'=> 'settings'])}}"  aria-disabled="true">{{__('messages.settings')}}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{request('tab')=='conversations'?'active':''}}" href="{{route('admin.store.view', ['store'=>$store->id, 'tab'=> 'conversations'])}}"  aria-disabled="true">{{translate('Conversations')}}</a>
+                    <a class="nav-link {{request('tab')=='conversations'?'active':''}}" href="{{route('admin.wholesaler.view', ['store'=>$store->id, 'tab'=> 'conversations'])}}"  aria-disabled="true">{{__('Conversations')}}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{request('tab')=='meta-data'?'active':''}}" href="{{route('admin.store.view', ['store'=>$store->id, 'tab'=> 'meta-data'])}}"  aria-disabled="true">{{translate('meta_data')}}</a>
+                    <a class="nav-link {{request('tab')=='meta-data'?'active':''}}" href="{{route('admin.wholesaler.view', ['store'=>$store->id, 'tab'=> 'meta-data'])}}"  aria-disabled="true">{{__('meta_data')}}</a>
                 </li>
             </ul>
             <!-- End Nav -->

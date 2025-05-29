@@ -1,6 +1,6 @@
 @extends('layouts.vendor.app')
 
-@section('title',translate('messages.dashboard'))
+@section('title',__('messages.dashboard'))
 
 @push('css_or_js')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -17,12 +17,12 @@
                     <span class="page-header-icon">
                         <img src="{{asset('public/assets/admin/img/category.png')}}" class="w--20" alt="">
                     </span>
-                        <span>{{translate('messages.dashboard')}}</span>
+                        <span>{{__('messages.dashboard')}}</span>
                     </h1>
                 </div>
                 <div class="col-sm text-sm-right">
                     <span class="d-inline-flex align-items-center">
-                        <span class="mr-2">{{translate('messages.followup')}}</span>
+                        <span class="mr-2">{{__('messages.followup')}}</span>
                         <i class="tio-restaurant fz-30px"></i>
                     </span>
                 </div>
@@ -34,21 +34,21 @@
             <div class="card-body">
                 <div class="row gx-2 gx-lg-3 mb-2">
                     <div class="col-md-9">
-                        <h4><i class="tio-chart-bar-4 fz-30px"></i>{{translate('messages.dashboard_order_statistics')}}</h4>
+                        <h4><i class="tio-chart-bar-4 fz-30px"></i>{{__('messages.dashboard_order_statistics')}}</h4>
                     </div>
                     <div class="col-md-3">
                         <select class="custom-select" name="statistics_type" onchange="order_stats_update(this.value)">
                             <option
                                 value="overall" {{$params['statistics_type'] == 'overall'?'selected':''}}>
-                                {{translate('messages.Overall Statistics')}}
+                                {{__('messages.Overall Statistics')}}
                             </option>
                             <option
                                 value="today" {{$params['statistics_type'] == 'today'?'selected':''}}>
-                                {{translate("messages.Today's Statistics")}}
+                                {{__("messages.Today's Statistics")}}
                             </option>
                             <option
                                 value="this_month" {{$params['statistics_type'] == 'this_month'?'selected':''}}>
-                                {{translate("messages.This Month's Statistics")}}
+                                {{__("messages.This Month's Statistics")}}
                             </option>
                         </select>
                     </div>
@@ -72,11 +72,11 @@
                                     @php($amount=array_sum($earning))
                                     <span class="h5 m-0 mr-3 fz--11 d-flex align-items-center mb-2 mb-md-0">
                                         <span class="legend-indicator chart-bg-2"></span>
-                                        {{translate('messages.total_earning')}}:&nbsp;<span> {{\App\CentralLogics\Helpers::format_currency(array_sum($earning))}}</span>
+                                        {{__('messages.total_earning')}}:&nbsp;<span> {{\App\CentralLogics\Helpers::format_currency(array_sum($earning))}}</span>
                                     </span>
                                     <span class="h5 m-0 fz--11 d-flex align-items-center mb-2 mb-md-0">
                                         <span class="legend-indicator chart-bg-3"></span>
-                                        {{translate('messages.commission_given')}}:&nbsp;<span>  {{\App\CentralLogics\Helpers::format_currency(array_sum($commission))}}</span>
+                                        {{__('messages.commission_given')}}:&nbsp;<span>  {{\App\CentralLogics\Helpers::format_currency(array_sum($commission))}}</span>
                                     </span>
                                 </div>
 
@@ -85,7 +85,7 @@
                             <div class="col-sm-auto align-self-sm-end">
                                 <!-- Legend Indicators -->
                                 <h5 class="text-center">
-                                    {{translate('messages.yearly_statistics')}}
+                                    {{__('messages.yearly_statistics')}}
                                     <i class="tio-chart-bar-4 fz--40px"></i>
                                 </h5>
                                 <!-- End Legend Indicators -->
@@ -189,7 +189,7 @@
             <div class="row align-items-center">
                 <div class="col-sm mb-2 mb-sm-0">
                     <h1 class="page-header-title">ssss, ssss</h1>
-                    <p class="page-header-text">{{translate('messages.employee_welcome_message')}}</p>
+                    <p class="page-header-text">{{__('messages.employee_welcome_message')}}</p>
                 </div>
             </div>
         </div>

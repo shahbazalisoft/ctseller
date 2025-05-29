@@ -20,7 +20,7 @@
             <div class="card h-100 card--bg-1">
                 <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
                     <h5 class="cash--subtitle text-white">
-                        {{translate('messages.collected_cash_by_store')}}
+                        {{__('messages.collected_cash_by_store')}}
                     </h5>
                     <div class="d-flex align-items-center justify-content-center mt-3">
                         <div class="cash-icon mr-3">
@@ -32,9 +32,9 @@
                 <div class="card-footer pt-0 bg-transparent border-0">
                     <button class="btn text-white text-capitalize bg--title h--45px w-100" id="collect_cash"
                                         type="button" data-toggle="modal" data-target="#collect-cash"
-                                        title="Collect Cash">{{ translate('messages.collect_cash_from_store') }}
+                                        title="Collect Cash">{{ __('messages.collect_cash_from_store') }}
                                     </button>
-                        {{-- <a class="btn text-white text-capitalize bg--title h--45px w-100" href="{{$store->vendor->status ? route('admin.transactions.account-transaction.index') : '#'}}" title="{{translate('messages.goto_account_transaction')}}">{{translate('messages.collect_cash_from_store')}}</a> --}}
+                        {{-- <a class="btn text-white text-capitalize bg--title h--45px w-100" href="{{$store->vendor->status ? route('admin.transactions.account-transaction.index') : '#'}}" title="{{__('messages.goto_account_transaction')}}">{{__('messages.collect_cash_from_store')}}</a> --}}
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
                 <div class="col-sm-6">
                     <div class="resturant-card card--bg-2">
                         <h4 class="title">{{\App\CentralLogics\Helpers::format_currency($wallet->pending_withdraw)}}</h4>
-                        <div class="subtitle">{{translate('messages.pending_withdraw')}}</div>
+                        <div class="subtitle">{{__('messages.pending_withdraw')}}</div>
                         <img class="resturant-icon w--30" src="{{asset('public/assets/admin/img/transactions/pending.png')}}" alt="transaction">
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                 <div class="col-sm-6">
                     <div class="resturant-card card--bg-3">
                         <h4 class="title">{{\App\CentralLogics\Helpers::format_currency($wallet->total_withdrawn)}}</h4>
-                        <div class="subtitle">{{translate('messages.total_withdrawal_amount')}}</div>
+                        <div class="subtitle">{{__('messages.total_withdrawal_amount')}}</div>
                         <img class="resturant-icon w--30" src="{{asset('public/assets/admin/img/transactions/withdraw-amount.png')}}" alt="transaction">
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                 <div class="col-sm-6">
                     <div class="resturant-card card--bg-4">
                         <h4 class="title">{{\App\CentralLogics\Helpers::format_currency($wallet->balance)}}</h4>
-                        <div class="subtitle">{{translate('messages.withdraw_able_balance')}}</div>
+                        <div class="subtitle">{{__('messages.withdraw_able_balance')}}</div>
                         <img class="resturant-icon w--30" src="{{asset('public/assets/admin/img/transactions/withdraw-balance.png')}}" alt="transaction">
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                 <div class="col-sm-6">
                     <div class="resturant-card card--bg-1">
                         <h4 class="title">{{\App\CentralLogics\Helpers::format_currency($wallet->total_earning)}}</h4>
-                        <div class="subtitle">{{translate('messages.total_earning')}}</div>
+                        <div class="subtitle">{{__('messages.total_earning')}}</div>
                         <img class="resturant-icon w--30" src="{{asset('public/assets/admin/img/transactions/earning.png')}}" alt="transaction">
                     </div>
                 </div>
@@ -86,7 +86,7 @@
                 <span class="card-header-icon mr-2">
                     <i class="tio-shop-outlined"></i>
                 </span>
-                <span class="ml-1">{{translate('messages.store_info')}}</span>
+                <span class="ml-1">{{__('messages.store_info')}}</span>
             </h5>
         </div>
         <div class="card-body">
@@ -103,16 +103,16 @@
                             </li>
                             <li>
                                 <i class="tio-city nav-icon"></i>
-                                <span>{{translate('messages.address')}}</span> <span>:</span> <span>{{$store->address}}</span>
+                                <span>{{__('messages.address')}}</span> <span>:</span> <span>{{$store->address}}</span>
                             </li>
 
                             <li>
                                 <i class="tio-call-talking nav-icon"></i>
-                                <span>{{translate('messages.email')}}</span> <span>:</span> <span>{{$store->email}}</span>
+                                <span>{{__('messages.email')}}</span> <span>:</span> <span>{{$store->email}}</span>
                             </li>
                             <li>
                                 <i class="tio-email nav-icon"></i>
-                                <span>{{translate('messages.phone')}}</span> <span>:</span> <span>{{$store->phone}}</span>
+                                <span>{{__('messages.phone')}}</span> <span>:</span> <span>{{$store->phone}}</span>
                             </li>
                         </ul>
                     </div>
@@ -131,7 +131,7 @@
                         <span class="card-header-icon mr-2">
                             <i class="tio-user"></i>
                         </span>
-                        <span class="ml-1">{{translate('messages.owner_info')}}</span>
+                        <span class="ml-1">{{__('messages.owner_info')}}</span>
                     </h5>
                 </div>
                 <div class="card-body">
@@ -165,27 +165,27 @@
                         <span class="card-header-icon mr-2">
                             <i class="tio-museum"></i>
                         </span>
-                        <span class="ml-1">{{translate('messages.bank_info')}}</span>
+                        <span class="ml-1">{{__('messages.bank_info')}}</span>
                     </h5>
                 </div>
                 <div class="card-body d-flex flex-column justify-content-center">
                     <ul class="list-unstyled list-unstyled-py-3 text-dark">
                         @if($store->vendor->bank_name)
                         <li class="pb-1 pt-1">
-                            <strong class="text--title">{{translate('messages.bank_name')}}:</strong> {{$store->vendor->bank_name ? $store->vendor->bank_name : 'No Data found'}}
+                            <strong class="text--title">{{__('messages.bank_name')}}:</strong> {{$store->vendor->bank_name ? $store->vendor->bank_name : 'No Data found'}}
                         </li>
                         <li class="pb-1 pt-1">
-                            <strong class="text--title">{{translate('messages.branch')}}  :</strong> {{$store->vendor->branch ? $store->vendor->branch : 'No Data found'}}
+                            <strong class="text--title">{{__('messages.branch')}}  :</strong> {{$store->vendor->branch ? $store->vendor->branch : 'No Data found'}}
                         </li>
                         <li class="pb-1 pt-1">
-                            <strong class="text--title">{{translate('messages.holder_name')}} :</strong> {{$store->vendor->holder_name ? $store->vendor->holder_name : 'No Data found'}}
+                            <strong class="text--title">{{__('messages.holder_name')}} :</strong> {{$store->vendor->holder_name ? $store->vendor->holder_name : 'No Data found'}}
                         </li>
                         <li class="pb-1 pt-1">
-                            <strong class="text--title">{{translate('messages.account_no')}}  :</strong> {{$store->vendor->account_no ? $store->vendor->account_no : 'No Data found'}}
+                            <strong class="text--title">{{__('messages.account_no')}}  :</strong> {{$store->vendor->account_no ? $store->vendor->account_no : 'No Data found'}}
                         </li>
                         @else
                         <li class="my-auto">
-                            <center class="card-subtitle">{{ translate('messages.No Data found') }}</center>
+                            <center class="card-subtitle">{{ __('messages.No Data found') }}</center>
                         </li>
                         @endif
                     </ul>
@@ -205,13 +205,13 @@
                         <span class="card-header-icon mr-2">
                             <i class="tio-user"></i>
                         </span>
-                        <span class="ml-1">{{translate('messages.store_document')}}</span>
+                        <span class="ml-1">{{__('messages.store_document')}}</span>
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="resturant--info-address">
                         @foreach($store_docs as $docVal)
-                        <a href="{{route('admin.store.doc-download',[$store->id,$docVal])}}" class="text-decoration-none">
+                        <a href="{{route('admin.wholesaler.doc-download',[$store->id,$docVal])}}" class="text-decoration-none">
                             {{$docVal}} 
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
                                 <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"></path>
@@ -231,7 +231,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{translate('messages.collect_cash_from_store')}}</h5>
+                <h5 class="modal-title">{{__('messages.collect_cash_from_store')}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -243,22 +243,22 @@
                     <input type="hidden" name="type" value="store">
                     <input type="hidden" name="store_id" value="{{ $store->id }}">
                     <div class="form-group">
-                        <label class="input-label" >{{translate('messages.payment_method')}} <span
+                        <label class="input-label" >{{__('messages.payment_method')}} <span
                                 class="input-label-secondary text-danger">*</span></label>
-                            <input class="form-control" type="text" name="method" id="method" required maxlength="191" placeholder="{{translate('messages.Ex_:_Card')}}">
+                            <input class="form-control" type="text" name="method" id="method" required maxlength="191" placeholder="{{__('messages.Ex_:_Card')}}">
                     </div>
                     <div class="form-group">
-                        <label class="input-label" >{{translate('messages.reference')}}</label>
+                        <label class="input-label" >{{__('messages.reference')}}</label>
                         <input  class="form-control" type="text" name="ref" id="ref" maxlength="191">
                     </div>
                     <div class="form-group">
-                        <label class="input-label" >{{translate('messages.amount')}} <span
+                        <label class="input-label" >{{__('messages.amount')}} <span
                                 class="input-label-secondary text-danger">*</span></label>
-                            <input class="form-control" type="number" min=".01" step="0.01" name="amount" id="amount" max="999999999999.99" placeholder="{{translate('messages.Ex_:_1000')}}">
+                            <input class="form-control" type="number" min=".01" step="0.01" name="amount" id="amount" max="999999999999.99" placeholder="{{__('messages.Ex_:_1000')}}">
                     </div>
                     <div class="btn--container justify-content-end">
-                        {{-- <button type="reset" class="btn btn--reset">{{translate('reset')}}</button> --}}
-                        <button type="submit" id="submit_new_customer" class="btn btn--primary">{{translate('submit')}}</button>
+                        {{-- <button type="reset" class="btn btn--reset">{{__('reset')}}</button> --}}
+                        <button type="submit" id="submit_new_customer" class="btn btn--primary">{{__('submit')}}</button>
                     </div>
                 </form>
             </div>
@@ -336,14 +336,14 @@
 
     function request_alert(url, message) {
         Swal.fire({
-            title: '{{translate('messages.are_you_sure')}}',
+            title: '{{__('messages.are_you_sure')}}',
             text: message,
             type: 'warning',
             showCancelButton: true,
             cancelButtonColor: 'default',
             confirmButtonColor: '#FC6A57',
-            cancelButtonText: '{{translate('messages.no')}}',
-            confirmButtonText: '{{translate('messages.yes')}}',
+            cancelButtonText: '{{__('messages.no')}}',
+            confirmButtonText: '{{__('messages.yes')}}',
             reverseButtons: true
         }).then((result) => {
             if (result.value) {
@@ -376,7 +376,7 @@
                             });
                         }
                     } else {
-                        toastr.success('{{translate('messages.transaction_saved')}}', {
+                        toastr.success('{{__('messages.transaction_saved')}}', {
                             CloseButton: true,
                             ProgressBar: true
                         });

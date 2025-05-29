@@ -190,4 +190,33 @@ class Helpers
         return DMReview::where(['delivery_man_id' => $deliveryman_id, 'rating' => $rating])->count();
     }
 
+    public static function get_vendor_id()
+    {
+        if (auth('vendor')->check()) {
+            return auth('vendor')->id();
+        } else if (auth('vendor_employee')->check()) {
+            return auth('vendor_employee')->user()->vendor_id;
+        }
+        return 0;
+    }
+
+    public static function get_loggedin_user()
+    {
+        if (auth('vendor')->check()) {
+            return auth('vendor')->user();
+        } else if (auth('vendor_employee')->check()) {
+            return auth('vendor_employee')->user();
+        }
+        return 0;
+    }
+
+    public static function get_store_data()
+    {
+        if (auth('vendor_employee')->check()) {
+            return auth('vendor_employee')->user()->store;
+        }
+        return auth('vendor')->user()->stores[0];
+    }
+
+
 }

@@ -179,26 +179,26 @@ class AdminController extends Controller
         return false;
     }
 
-    public function logout()
-    {
-        if(auth('vendor')?->check()){
-            $user_link = Helpers::get_login_url('store_login_url');
-            auth()->guard('vendor')->logout();
-        }
-        elseif(auth('vendor_employee')?->check()){
-            $user_link = Helpers::get_login_url('store_employee_login_url');
-            auth()->guard('vendor_employee')->logout();
-        }
-        else{
-            if(!auth()?->guard('admin')?->user()?->role_id == 1){
-                $user_link = Helpers::get_login_url('admin_employee_login_url');
-            } else {
-                $user_link = Helpers::get_login_url('admin_login_url');
-            }
-            auth()?->guard('admin')?->logout();
-        }
-        return redirect()->route('login',[$user_link]);
-    }
+    // public function logout()
+    // {
+    //     if(auth('vendor')?->check()){
+    //         $user_link = Helpers::get_login_url('store_login_url');
+    //         auth()->guard('vendor')->logout();
+    //     }
+    //     elseif(auth('vendor_employee')?->check()){
+    //         $user_link = Helpers::get_login_url('store_employee_login_url');
+    //         auth()->guard('vendor_employee')->logout();
+    //     }
+    //     else{
+    //         if(!auth()?->guard('admin')?->user()?->role_id == 1){
+    //             $user_link = Helpers::get_login_url('admin_employee_login_url');
+    //         } else {
+    //             $user_link = Helpers::get_login_url('admin_login_url');
+    //         }
+    //         auth()?->guard('admin')?->logout();
+    //     }
+    //     return redirect()->route('login',[$user_link]);
+    // }
 
     public function index()
     {
